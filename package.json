@@ -1,0 +1,17 @@
+{
+  "name": "es6_slack_lookup",
+  "version": "1.0.0",
+  "description": "Microservice to parse out es6 cheatsheet on github, and respond with examples from slash commands in slack",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "express": "^4.13.4",
+    "mocha": "^2.4.5"
+  }
+}
