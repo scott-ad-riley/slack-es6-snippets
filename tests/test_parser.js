@@ -27,15 +27,32 @@ describe('The Parser should', function () {
   });
 
   it("return an array of matches from the headings in the document", function () {
-    var result = parserFull.getHeadings();
+    var result = parserFull.parseHeadings();
     assert.isArray(result, 'parsed headings was not an array');
   });
 
   it("return an array of matches from the headings with no hashtags", function () {
-    var result = parserFull.getHeadings();
-    console.log(result);
+    var result = parserFull.parseHeadings();
     assert.notInclude(result.join(), '#', 'parsed headings contained a hashtag');
   });
+
+  it("build an array of the snippets associated with a heading", function () {
+    var testHeading = parserFull.parseHeadings()[0];
+    var result = parserFull.parseSnippets(testHeading);
+    assert.isArray(result, 'parsed snippets was not an array');
+  });
+
+  it("build a hash lookup of keywords for the headings", function () {
+    var headings = parserFull.parseHeadings();
+    var result = parserFull.buildLookupHash(headings);
+    assert.isObject(result, 'hash lookup was not an object')
+  });
+
+  it("build a 2D array of snippets under each heading", function () {
+    var result = parserFull.buildSnippetArrays();
+    console.log(result);
+    assert.isArray(result, 'collection of snippet arrays was not an array');
+  })
 
 
 });
