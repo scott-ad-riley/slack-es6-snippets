@@ -1,5 +1,4 @@
 const app = require('express')();
-const fs = require('fs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
