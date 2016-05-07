@@ -21,6 +21,7 @@ app.get('/', function (req, res) {
   if (!isValidArguments(req.query.text)) {
     res.status(400)
     res.send("Request Error: Invalid Arguments");
+    return;
   }
   var arguments = collectArgs(req.query.text);
   // wrap snippet with response for user
