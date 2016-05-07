@@ -7,6 +7,8 @@ const excludedKeywords = ["and", "/", "with", "versus", "functions"];
 
 module.exports = function () {
   this.rawContent = "";
+  this.headingsLookup = {};
+  this.snippetsArray = [];
   this.fetchLocalFile = (path, callback) => {
     fs.readFile(path, 'utf8', (err,data) => {
       if (err) {
@@ -40,28 +42,37 @@ module.exports = function () {
     return rawHeadings.map((str) => this.removeHashtags(str.trim()));
   }
   this.parseSnippets = (heading) => {
-    let startPosition = this.rawContent.indexOf("## " + heading) + heading.length;
+    let startPosition = this.rawContent.indexOf("\n## " + heading) + heading.length;
     let endPosition = this.rawContent.indexOf("\n##", startPosition);
     let content = this.rawContent.slice(startPosition, endPosition);
     let re = new RegExp(/```([^`]*)```/g);
-    return regex.parse(re, content);
+    return regex.parse(re, content).map(this.stripMarkdownTicks);
+  }
+  this.stripMarkdownTicks = (string) => {
+    let re = new RegExp(/```(.*?)\n/g);
+    let interim = regex.replace(re, "", string);
+    return interim.replace("```", "");
   }
   this.removeHashtags = (str) => {
     let re = new RegExp(/##\s/g);
     return regex.replace(re, "", str);
   }
   this.buildLookupHash = (headingsArray) => {
-    let lookup = {};
-    headingsArray.forEach((heading, index) => {
+    var headings = headingsArray || this.parseHeadings();
+    headings.forEach((heading, index) => {
       heading.split(" ").forEach((keyword) => {
         if (excludedKeywords.indexOf(keyword) === -1)
-          lookup[keyword] = index;
+          this.headingsLookup[keyword.toLowerCase()] = index;
       });
     });
-    return lookup;
+    return this.headingsLookup;
   }
   this.buildSnippetArrays = () => {
     let headings = this.parseHeadings();
-    return headings.map(this.parseSnippets);
+    this.snippetsArray = headings.map(this.parseSnippets);
+    return this.snippetsArray;
+  }
+  this.lookupHeadings = (heading) => {
+    return this.headingsLookup[heading.toLowerCase()];
   }
 }

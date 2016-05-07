@@ -1,5 +1,5 @@
 module.exports.parse = function (regex, string) {
-  return string.match(regex);
+  return string.match(regex) || [];
 }
 
 module.exports.replace = function (target, replacement, string) {
