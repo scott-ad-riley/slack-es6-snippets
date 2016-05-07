@@ -1,5 +1,7 @@
-var request = require('request');
-const SLACK_API_TOKEN = "xoxb-41027876145-rOhFPqzTwfvU5Ym82d1uJSXe";
+const request = require('request');
+const env = require('node-env-file');
+env("./.env");
+
 const url = "https://slack.com/api/files.upload";
 
 module.exports = function (snippetContents, targetList, feature, snippetNumber, snippetMax) {
@@ -7,7 +9,7 @@ module.exports = function (snippetContents, targetList, feature, snippetNumber, 
     url,
     {
       form: {
-        token: SLACK_API_TOKEN,
+        token: process.env.SLACK_BOT_TOKEN,
         content: snippetContents,
         filetype: "javascript",
         filename: "snippet.js",
@@ -17,7 +19,7 @@ module.exports = function (snippetContents, targetList, feature, snippetNumber, 
     },
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        console.log("Snippet Posted");
+        console.log("Snippet Response:", body);
       }
     }
   );

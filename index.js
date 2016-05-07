@@ -1,9 +1,10 @@
 const app = require('express')();
 const Parser = require('./src/parser');
 const postSnippet = require('./src/slack_snippet');
-const SLACK_APP_TOKEN = "zuRqzkw0Nfu9BAWVJW0cAZbe";
+const env = require('node-env-file');
 const log = console.log;
 const docs = new Parser();
+env('./.env');
 
 docs.fetchLocalFile('./raw_docs.md', function () {
   docs.buildLookupHash();
@@ -12,7 +13,7 @@ docs.fetchLocalFile('./raw_docs.md', function () {
 
 app.get('/', function (req, res) {
   // validate a request with token
-  if (req.query.token !== SLACK_APP_TOKEN) {
+  if (req.query.token !== process.env.SLACK_APP_TOKEN) {
     res.status(403);
     res.send("Request Error: Invalid Token");
     return;
