@@ -22,7 +22,4 @@ I have it currently setup on a test slack team - message me and I can help you g
     * problem becomes that people will request 1 all of the time, just because it's the first
 * Possibly look at pulling out descriptions also in the cheatsheet and using them in the comments for a snippet
 * Maybe implement a `/es6 [feature] all` command which just combines all of the snippets from the cheatsheet under one feature into one snippet to post into slack
-* Deploy it
-  * heroku for free with db
-  * now for free with no db
-  * DO for 100% uptime with db
+* Deploy it to https://zeit.co/now
