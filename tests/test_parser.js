@@ -50,7 +50,6 @@ describe('The Parser should', function () {
 
   it("build a 2D array of snippets under each heading", function () {
     var result = parserFull.buildSnippetArrays();
-    console.log(result);
     assert.isArray(result, 'collection of snippet arrays was not an array');
   })
 
