@@ -8,6 +8,7 @@ const excludedKeywords = ["and", "/", "with", "versus", "functions"];
 module.exports = function () {
   this.rawContent = "";
   this.headingsLookup = {};
+  this.headingsArray = [];
   this.snippetsArray = [];
   this.fetchLocalFile = (path, callback) => {
     fs.readFile(path, 'utf8', (err,data) => {
@@ -39,7 +40,8 @@ module.exports = function () {
     let re = new RegExp(/\n##\s(.*)/g);
     let rawHeadings = regex.parse(re, this.rawContent);
     rawHeadings.shift();
-    return rawHeadings.map((str) => this.removeHashtags(str.trim()));
+    this.headings = rawHeadings.map((str) => this.removeHashtags(str.trim()));
+    return this.headings;
   }
   this.parseSnippets = (heading) => {
     let startPosition = this.rawContent.indexOf("\n## " + heading) + heading.length;
