@@ -5,14 +5,10 @@ const SLACK_APP_TOKEN = "zuRqzkw0Nfu9BAWVJW0cAZbe";
 const log = console.log;
 const docs = new Parser();
 
-const bodyParser = require('body-parser');
-
 docs.fetchLocalFile('./raw_docs.md', function () {
   docs.buildLookupHash();
   docs.buildSnippetArrays();
 });
-
-app.use(bodyParser.json())
 
 app.get('/', function (req, res) {
   // validate a request with token
@@ -31,7 +27,7 @@ app.get('/', function (req, res) {
   var snippet = lookupSnippet(arguments);
   // send response
   postSnippet(snippet.text, req.query.user_id, snippet.feature, snippet.index, snippet.max);
-  res.send("I've just messaged you with a snippet :-)");
+  res.send("");
 });
 
 const isValidArguments = (text) => {
