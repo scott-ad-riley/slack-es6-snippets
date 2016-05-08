@@ -5,7 +5,7 @@ const raw_file = require('./mock_data')();
 
 describe('The Validator should', () => {
   var parser;
-  beforeEach(function () {
+  before(function () {
     parser = new Parser();
     parser.rawContent = raw_file;
     parser.buildLookupHash();
@@ -43,6 +43,5 @@ describe('The Validator should', () => {
   it("not allow a number out of range", () => {
     assert.isNotTrue(isValid("arrow 100", parser));
   });
-
 
 });

@@ -2,7 +2,7 @@ const app = require('express')();
 const Parser = require('./src/parser');
 const postSnippet = require('./src/slack_snippet');
 const env = require('node-env-file');
-const areValidArguments = require('./src/command_validator');
+const isValidArguments = require('./src/command_validator');
 const docs = new Parser();
 env('./.env');
 
@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
     return;
   }
   // parse out if argument
-  if (!areValidArguments(req.query.text, docs)) {
+  if (!isValidArguments(req.query.text, docs)) {
     res.status(400)
     res.send("Request Error: Invalid Arguments");
     return;
