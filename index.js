@@ -41,7 +41,7 @@ const isValidArguments = (text) => {
     return false;
   }
   if (testText.split(" ").length > 1) {
-    if (isNaN(testText.split(" ")[1])) {
+    if (isNaN(testText.split(" ")[1]) && testText.split(" ")[1] !== "all") {
       return false;
     }
     var headingIndex = docs.lookupHeadings(testText.split(" ")[0]);
