@@ -2,7 +2,7 @@ const app = require('express')();
 const Parser = require('./src/parser');
 const postSnippet = require('./src/slack_snippet');
 const env = require('node-env-file');
-const log = console.log;
+const areValidArguments = require('./src/command_validator');
 const docs = new Parser();
 env('./.env');
 
@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
     return;
   }
   // parse out if argument
-  if (!isValidArguments(req.query.text)) {
+  if (!areValidArguments(req.query.text, docs)) {
     res.status(400)
     res.send("Request Error: Invalid Arguments");
     return;
@@ -31,26 +31,6 @@ app.get('/', function (req, res) {
   postSnippet(snippet.text, req.query.user_id, snippet.feature, snippet.index, snippet.max);
   res.send("");
 });
-
-const isValidArguments = (text) => {
-  var testText = text.trim();
-  if (testText === "") {
-    return false;
-  }
-  if (docs.lookupHeadings(testText.split(" ")[0]) === undefined) {
-    return false;
-  }
-  if (testText.split(" ").length > 1) {
-    if (isNaN(testText.split(" ")[1]) && testText.split(" ")[1] !== "all") {
-      return false;
-    }
-    var headingIndex = docs.lookupHeadings(testText.split(" ")[0]);
-    if (docs.snippetsArray[headingIndex].length < testText.split(" ")[1]) {
-      return false;
-    }
-  }
-  return true;
-}
 
 const collectArgs = (text) => {
   var args = text.split(" ");
