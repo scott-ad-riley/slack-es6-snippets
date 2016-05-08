@@ -4,7 +4,7 @@ env("./.env");
 
 const url = "https://slack.com/api/files.upload";
 
-module.exports = function (snippetContents, targetList, feature, snippetNumber, snippetMax) {
+module.exports = function (snippetContents, targetList, snippetTitle) {
   request.post(
     url,
     {
@@ -13,7 +13,7 @@ module.exports = function (snippetContents, targetList, feature, snippetNumber, 
         content: snippetContents,
         filetype: "javascript",
         filename: "snippet.js",
-        title: feature + " #" + snippetNumber + "/" + snippetMax,
+        title: snippetTitle,
         channels: targetList
       }
     },

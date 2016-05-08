@@ -28,7 +28,7 @@ app.get('/', function (req, res) {
   // wrap snippet with response for user
   var snippet = lookupSnippet(arguments);
   // send response
-  postSnippet(snippet.text, req.query.user_id, snippet.feature, snippet.index, snippet.max);
+  postSnippet(snippet.text, req.query.user_id, snippet.title);
   res.send("");
 });
 
@@ -36,17 +36,23 @@ const collectArgs = (text) => {
   var args = text.split(" ");
   return {
     feature: args[0], 
-    snippet: Math.abs(args[1] - 1) || 0
+    snippet: !isNaN(args[1]) ? Math.abs(args[1] - 1) : "all"
   };
 }
 
 const lookupSnippet = (args) => {
   var featureIndex = docs.lookupHeadings(args.feature);
+  var title = docs.headings[featureIndex];
+  if (args.snippet === "all") {
+    var snippetText = docs.collectAllSnippets(featureIndex)
+    title += " All Snippets (" + docs.snippetsArray[featureIndex].length + ")";
+  } else {
+    var snippetText = docs.snippetsArray[featureIndex][args.snippet];
+    title += " #" + (args.snippet + 1) + "/" + docs.snippetsArray[featureIndex].length;
+  }
   return {
-    text: docs.snippetsArray[featureIndex][args.snippet],
-    index: args.snippet + 1,
-    max: docs.snippetsArray[featureIndex].length,
-    feature: docs.headings[featureIndex]
+    text: snippetText,
+    title: title
   }
 }
 

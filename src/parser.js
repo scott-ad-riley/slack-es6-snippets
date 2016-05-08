@@ -77,4 +77,7 @@ module.exports = function () {
   this.lookupHeadings = (heading) => {
     return this.headingsLookup[heading.toLowerCase()];
   }
+  this.collectAllSnippets = (index) => {
+    return this.snippetsArray[index].join("\n\n");
+  }
 }
